@@ -1,0 +1,9 @@
+Hi,
+This is the main folder containing all materials at 1 place.
+
+This will contain everything like:
+-> Python basics
+-> FastAPI - backend 
+-> DSA - theory + practice
+-> System Design - LLD + HLD
+-> Interview tips + resume
