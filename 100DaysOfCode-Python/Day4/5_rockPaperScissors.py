@@ -43,21 +43,27 @@ scissors = """
 ---.__(___)
 """
 
-print(f"You choose: {user_choice}")
-if user_choice == 0:
-    print(rock)
-elif user_choice == 1:
-    print(paper)
-else:
-    print(scissors)
+options = [rock, paper, scissors]
+# either or 3 is correct.
+print(f"You choose: {user_choice} {options[user_choice]}")
+# print(f"You choose: {user_choice} + rock")
 
-print(f"Computer choose: {computer_choice}")
-if computer_choice == 0:
-    print(rock)
-elif computer_choice == 1:
-    print(paper)
-else:
-    print(scissors)
+# if user_choice == 0:
+#     print(rock)
+# elif user_choice == 1:
+#     print(paper)
+# else:
+#     print(scissors)
+
+# print(f"Computer choose: {computer_choice} {options[computer_choice]}")
+print(f"Computer choose: {computer_choice}" + options[computer_choice])
+
+# if computer_choice == 0:
+#     print(rock)
+# elif computer_choice == 1:
+#     print(paper)
+# else:
+#     print(scissors)
 
 if user_choice == computer_choice:
     print("It's a draw!")
