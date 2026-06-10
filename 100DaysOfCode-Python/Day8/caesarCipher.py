@@ -17,53 +17,85 @@ a8"     "" 88 88P'    "8a 88P'    "8a a8P_____88 88P'   "Y8
               88                                             
               88           
 """
-lowercase = [
-    'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
-    'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
-]
 
-uppercase = [
-    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
-    'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
-]
+options = ['encode', 'decode']
+
+def ciphingMessage(shift, message):
+    # result = "" this is also fine but if we look conceptually then string are immutable in python so everytime anything added here creates a new string, using memory.
+    result = []
+    for char in message:
+        if char.islower():
+            result.append(chr((ord(char) - ord('a') + shift ) % 26 + ord('a'))) #lets say char is z whose ascii is 122, 122 - 97 + 3 + 97 = 125 which is } but it should be c -> (122 - 97 + 3) % 26 + 97
+        elif char.isupper():
+            result.append(chr((ord(char) - ord('A') + shift ) % 26 + ord('A')))
+        else: #for any other char which can be whitespace or special char or so.
+            result.append(char)
+    result = "".join(result) #basically right now result is -> ['a', 'b', 'c']. "".join will join them without any space or extrachar -> "abc"
+    return result
 
 def encryptDecryptMessage():
-    encryptDecrypt = input("Type 'encode' to encrypt, type 'decode' to decrypt: ")
-    if encryptDecrypt.lower() != "encode" and encryptDecrypt.lower() != "decode":
+
+    encryptDecrypt = input("Type 'encode' to encrypt, type 'decode' to decrypt: ").lower()
+
+    # we can make a list and then search inside it rather than this seperate checks
+    # if encryptDecrypt != "encode" and encryptDecrypt != "decode":
+    if encryptDecrypt not in options:
         print("Please choose 'encode' or 'decode'.")
         return
+
     message = input("Type your message: ")
-    shift = int(input("Type the shift number: "))
+
+    # if user enters string or anything which is not a number then valueerror would be raised.
+    try :
+        shift = int(input("Type the shift number: "))
+    except ValueError:
+        print("Shift must be a number")
+        return
     if shift < 1:
         print("Please enter correct shift, it should not be 0 or negative.")
         return
-    result = ""
-    if encryptDecrypt.lower() == "encode":
-        for char in message:
-            print(ord(char))
-            print(shift % 26)
-            print(chr(ord(char) - ord('a') + shift % 26))
-            if char.islower() == True:
-                result += lowercase[(ord(char) - ord('a') + shift) % 26]
-            else:
-                result += uppercase[(ord(char) - ord('A') + shift) % 26]
-            print(result) 
-        print(f"Here's the encoded result: {result}")
-    else:
-        for char in message:
-            if char.islower() == True:
-                result += lowercase[(ord(char) - ord('a') - shift) % 26]
-            else:
-                result += uppercase[(ord(char) - ord('A') - shift) % 26]
-        print(f"Here's the decoded result: {result}")
-        
+    #limiting shift value within 26.
+    # Note: we dont explicitly need this wrap around code becoz later we r doing this only. it just improve readability and showcase intent.
+    shift %= 26
 
-# Type 'yes' if you want to go again. Otherwise type 'no'.
+    #we can do like this but here we r violating code rule: DRY = Dont Repeat Yourself.
+    # if encryptDecrypt.lower() == "encode":
+    #     for char in message:
+    #         if char.islower():
+    #             # we can ommit using an external list by proper usage of ascii.
+    #             result += chr(ord(char) - ord('a') + shift + ord('a')) 
+    #         elif char.isupper():
+    #             result += ord(char) - ord('A') + shift + ord('A')
+    #         else: #for any other char which can be whitespace or special char or so.
+    #             result += char
+    #     print(f"Here's the encoded result: {result}")
+    # else:
+        # for char in message:
+        #     if char.islower():
+        #         result += chr(ord(char) - ord('a') - shift + ord('a'))
+        #     elif char.isupper():
+        #         result += chr(ord(char) - ord('A') - shift + ord('A'))
+        #     else: #for any other char which can be whitespace or special char or so.
+        #         result += char
+        # print(f"Here's the decoded result: {result}")
+    
+    # Whats changing in both if-else
+    # shift 
+    
+    if encryptDecrypt == "decode": #decode
+        shift *= -1
+    result = ciphingMessage(shift, message)
+    if encryptDecrypt == "encode": #encode
+        print(f"Here's the encoded result: {result}")
+    else: #decode
+        print(f"Here's the decoded result: {result}")
+
+
 # calling for 1st time
 print(logo)
 encryptDecryptMessage()
 
-while 1:
+while True:
     userChoice = input("Type 'yes' if you want to go again. Otherwise type 'no': ")
     if userChoice.lower() == "yes":
         encryptDecryptMessage()
@@ -73,4 +105,5 @@ while 1:
     else:
         print("Please enter either 'yes' or 'no'.")
         break
-        
+
+# I can use set or tuple for storing mode/options - decode encode but that for later when i learn that.
