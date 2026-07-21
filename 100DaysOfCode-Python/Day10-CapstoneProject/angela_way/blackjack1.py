@@ -12,5 +12,5 @@ computer_cards = []
 
 # intial 2 cards
 for _ in range(2): # we r using _ becoz here we dont need any variable of any kind.
-    player_cards.append(deal_card)
-    computer_cards.append(deal_card)
+    player_cards.append(deal_card())
+    computer_cards.append(deal_card())
