@@ -162,3 +162,18 @@ while True:
     else:
         print("Kindly enter only 'y' or 'n'")
         break
+
+
+# Learning
+# if i have to add a single item to a list then append() is correct way to do so.
+new_list = []
+new_ele = 5
+new_list.append(5)
+
+# but one can argue that += should also work but no thats not the case....
+new_list += new_ele
+# this is wrong, let me explain...
+# will say integer is not iterable.
+# heres the concept:
+# += internally means --> .extend() function
+# and extend function only applies to an iterable (int)
