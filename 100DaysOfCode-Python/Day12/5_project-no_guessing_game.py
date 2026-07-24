@@ -6,15 +6,20 @@ def start_game(no_of_chances, initial_guessed_number):
     print(f"You have {no_of_chances} attempts remaining to guess the number.")
 
     while no_of_chances:
-        guessed_number = input("Make a guess: ")
+        guessed_number = int(input("Make a guess: "))
         if guessed_number < initial_guessed_number:
             print("Too Low !!!")
             print("Guess Again ...")
+            no_of_chances -= 1
+            print(f"You have {no_of_chances} attempts remaining to guess the number.")
         elif guessed_number > initial_guessed_number:
             print("Too High !!!")
             print("Guess Again ...")
+            no_of_chances -= 1
+            print(f"You have {no_of_chances} attempts remaining to guess the number.")
         else:
             print("You Won !!!")
+            return
     
     print("You have run out of guesses, you loose....")
     print(f"Original Number was {initial_guessed_number}")
