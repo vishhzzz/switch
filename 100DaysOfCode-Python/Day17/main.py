@@ -12,4 +12,9 @@ for ele in data.question_data:
     question_list.append(question)
 
 quiz = QuizBrain(question_list)
-quiz.next_question()
+
+while quiz.still_has_question():
+    # if there r questions remaining, keep asking next question
+    quiz.next_question()
+
+print("Quiz ended !!!")

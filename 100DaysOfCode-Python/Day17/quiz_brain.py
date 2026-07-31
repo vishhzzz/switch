@@ -9,3 +9,6 @@ class QuizBrain:
         # increase question no
         self.question_no += 1
         ques = input(f"Q.{self.question_no}: {question_text} (True/False)?: ")
+
+    def still_has_question(self):
+        return self.question_no < len(self.question_list)
