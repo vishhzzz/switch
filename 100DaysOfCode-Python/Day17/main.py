@@ -8,7 +8,7 @@ from quiz_brain import QuizBrain
 # list
 question_list = []
 for ele in data.question_data:
-    question = Question(ele["text"], ele["answer"])
+    question = Question(ele["question"], ele["correct_answer"])
     question_list.append(question)
 
 quiz = QuizBrain(question_list)
@@ -19,3 +19,5 @@ while quiz.still_has_question():
 
 print("Quiz ended !!!")
 print(f"Your total score is: {quiz.score}/{quiz.question_no}")
+
+
