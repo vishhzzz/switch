@@ -3,10 +3,13 @@
 
 import data
 from question_model import Question
+from quiz_brain import QuizBrain
 
 # list
 question_list = []
 for ele in data.question_data:
     question = Question(ele["text"], ele["answer"])
     question_list.append(question)
-print(question_list)
+
+quiz = QuizBrain(question_list)
+quiz.next_question()
