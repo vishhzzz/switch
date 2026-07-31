@@ -18,3 +18,4 @@ while quiz.still_has_question():
     quiz.next_question()
 
 print("Quiz ended !!!")
+print(f"Your total score is: {quiz.score}/{quiz.question_no}")
