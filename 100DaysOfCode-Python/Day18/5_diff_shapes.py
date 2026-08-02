@@ -90,12 +90,16 @@ def draw_shape_up(no_of_sides):
 
 turtle.shape('turtle')
 
+colours = ["CornflowerBlue", "DarkOrchid", "IndianRed", "DeepSkyBlue", "LightSeaGreen", "wheat", "SlateGray", "SeaGreen"]
+
 for no_of_sides in range(3, 11):
     draw_shape_down(no_of_sides)
+    turtle.color(colours[no_of_sides-3])
 
 turtle.backward(200)
 
 for no_of_sides in range(3, 11):
     draw_shape_up(no_of_sides)
+    turtle.color(colours[no_of_sides-3])
 
 screen.exitonclick()
