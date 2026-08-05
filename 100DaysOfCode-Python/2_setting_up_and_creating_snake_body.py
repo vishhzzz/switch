@@ -17,7 +17,6 @@ positions = [(0,0), (-20, 0), (-40, 0)]
 snake_body = []
 
 # Create a snake body
-pos = 0
 for position in positions:
     tim = Turtle(shape='square')
     tim.color('white')
