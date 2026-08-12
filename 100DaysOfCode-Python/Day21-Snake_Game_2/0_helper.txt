@@ -1,0 +1,5 @@
+We will be completing our snake game.
+
+Learn about Class Inheritance.
+
+And also about List Slicing.
