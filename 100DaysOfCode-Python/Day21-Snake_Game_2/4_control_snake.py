@@ -7,6 +7,7 @@ from turtle import Screen
 from snake import Snake
 import time
 import food
+import scoreboard
 
 screen = Screen()
 
@@ -18,6 +19,7 @@ screen.tracer(0) #turn off the tracer. Nothing will be drawn until update is cal
 
 snake = Snake()
 food = food.Food()
+score = scoreboard.Scoreboad()
 
 # key-events - in order to control snake.
 screen.listen()
@@ -37,6 +39,9 @@ while is_game_on:
     # we can compare this via distance method which tells that how much distance is in btw the 2.
     if snake.snake_body[0].distance(food) < 15: #as snake is 20*20 and food is 10*10
         food.random_food()
+        # also increase the score as snake eats food.
+        score.score += 1
+        score.display_score()
 
 # hold the screen, till user does click on screen.
 screen.exitonclick()
