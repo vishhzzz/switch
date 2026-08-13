@@ -1,5 +1,9 @@
 We will be completing our snake game.
 
 Learn about Class Inheritance.
+---> Class can inherit from other classes.
+---> inheriting attributes, methods
 
 And also about List Slicing.
+---> dictionary,
+---> list 
