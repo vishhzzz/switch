@@ -41,12 +41,25 @@ while is_game_on:
         food.random_food()
         # also increase the score as snake eats food.
         score.score += 1
+        snake.grow_snake()
         score.display_score()
-    print(f"{snake.snake_body[0].xcor()}, {snake.snake_body[0].ycor()}")
+
+    # detecting collision with wall
     if -300 >= snake.snake_body[0].xcor() or snake.snake_body[0].xcor() >= 300 or -300 >= snake.snake_body[0].ycor() or snake.snake_body[0].ycor() >= 300:
         print("Game Over !!!")
         is_game_on = False
         score.game_over()
+
+    # detecting collision with tail
+    # we can detect this if snake head collide with snake body
+    for snake_segment in snake.snake_body:
+        # of all snake segments here, we have snake head too
+        # so we need to pass
+        if snake_segment == snake.snake_body[0]:
+            pass
+        elif snake.snake_body[0].distance(snake_segment) < 10:
+            is_game_on = False
+            score.game_over()
 
 # hold the screen, till user does click on screen.
 screen.exitonclick()

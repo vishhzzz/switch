@@ -13,11 +13,18 @@ class Snake:
 
     def create_snake(self):
         for position in POSITIONS:
-            timmy_the_turtle = Turtle(shape='square')
-            timmy_the_turtle.color('white')
-            timmy_the_turtle.penup()
-            timmy_the_turtle.goto(position)
-            self.snake_body.append(timmy_the_turtle)
+            self.add_snake_segment(position)
+
+    def add_snake_segment(self, position):
+        timmy_the_turtle = Turtle(shape='square')
+        timmy_the_turtle.color('white')
+        timmy_the_turtle.penup()
+        timmy_the_turtle.goto(position)
+        self.snake_body.append(timmy_the_turtle)        
+
+    def grow_snake(self):
+        # last position
+        self.add_snake_segment(self.snake_body[-1].position())
 
     def move(self):
         for seg in range(len(self.snake_body)-1, 0, -1):
