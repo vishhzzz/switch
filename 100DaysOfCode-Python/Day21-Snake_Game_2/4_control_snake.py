@@ -42,6 +42,11 @@ while is_game_on:
         # also increase the score as snake eats food.
         score.score += 1
         score.display_score()
+    print(f"{snake.snake_body[0].xcor()}, {snake.snake_body[0].ycor()}")
+    if -300 >= snake.snake_body[0].xcor() or snake.snake_body[0].xcor() >= 300 or -300 >= snake.snake_body[0].ycor() or snake.snake_body[0].ycor() >= 300:
+        print("Game Over !!!")
+        is_game_on = False
+        score.game_over()
 
 # hold the screen, till user does click on screen.
 screen.exitonclick()
