@@ -52,12 +52,10 @@ while is_game_on:
 
     # detecting collision with tail
     # we can detect this if snake head collide with snake body
-    for snake_segment in snake.snake_body:
+    for snake_segment in snake.snake_body[1:]:
         # of all snake segments here, we have snake head too
         # so we need to pass
-        if snake_segment == snake.snake_body[0]:
-            pass
-        elif snake.snake_body[0].distance(snake_segment) < 10:
+        if snake.snake_body[0].distance(snake_segment) < 10:
             is_game_on = False
             score.game_over()
 
