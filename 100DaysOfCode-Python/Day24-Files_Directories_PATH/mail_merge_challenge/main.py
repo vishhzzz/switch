@@ -22,6 +22,7 @@ with open("./Day24-Files_Directories_PATH/mail_merge_challenge/Input/Names/invit
     #     names.append(line.strip())
 
     # or
+    # readlines gives directly the list containing each line in form of list
     names = file.readlines()
 
 with open("./Day24-Files_Directories_PATH/mail_merge_challenge/Input/Letters/starting_letter.txt") as file:
