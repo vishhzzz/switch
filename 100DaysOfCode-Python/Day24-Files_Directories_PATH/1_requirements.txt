@@ -1,0 +1,1 @@
+we need to add high score functionality in our snake game.
