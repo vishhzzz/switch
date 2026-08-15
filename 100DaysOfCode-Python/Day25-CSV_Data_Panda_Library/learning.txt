@@ -14,3 +14,9 @@ PANDAS: this is Python Data Analysis Library.
 superhelfull and powerfull to perform data analysis on tabular data.
 
 PANDAS: is not in-built so we have to install it.
+
+We have 2 primary data structures in PANDA.
+---> Series (1-Dimensional) - kind of list like column or row.
+---> DataFrame (2-Dimensional) - tabular.
+
+1st row of table is name of Column via which Panda lib works.
