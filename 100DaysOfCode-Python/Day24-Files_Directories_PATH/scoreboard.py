@@ -2,13 +2,15 @@ from turtle import Turtle
 ALIGNMENT = "center"
 FONT = ("Courier", 24, "normal")
 
+with open("Day24-Files_Directories_PATH/high_score.txt", 'r') as file:
+    high_score = file.read()
 
 class Scoreboard(Turtle):
 
     def __init__(self):
         super().__init__()
         self.score = 0
-        self.high_score = 0
+        self.high_score = int(high_score)
         self.color("white")
         self.penup()
         self.goto(0, 270)
@@ -23,6 +25,8 @@ class Scoreboard(Turtle):
     def reset_game(self):
         if self.score > self.high_score:
             self.high_score = self.score
+            with open("Day24-Files_Directories_PATH/high_score.txt", 'w+') as file:
+                file.write(str(self.high_score))
         # self.clear()
         self.score = 0
         self.update_scoreboard()
@@ -35,3 +39,5 @@ class Scoreboard(Turtle):
     def end_game(self):
         self.goto(0, 0)
         self.write("Game Over", align=ALIGNMENT, font=FONT)
+        with open("Day24-Files_Directories_PATH/high_score.txt", 'w+') as file:
+            file.write(self.high_score)

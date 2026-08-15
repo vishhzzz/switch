@@ -1,0 +1,4 @@
+as we have seen high score is consistent for a session only until game ends.
+
+but now we want that our high score should be persistent throughout game sessions. 
+For that we need to have something whihc can store them in real time, we'll use files.
