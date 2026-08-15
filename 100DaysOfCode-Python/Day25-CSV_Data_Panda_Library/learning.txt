@@ -1,0 +1,16 @@
+We'll get to know about CSV data and also about Panda lib.
+
+csv is an in built library
+
+CSV --- Comma Seperated Data
+
+mostly in excel files or tabular data.
+excel files r mostly downloaded or work upon as CSV file.
+
+CSV: we still need to write many lines just for small task. So more friendly and helpfull lib is pandas.
+
+
+PANDAS: this is Python Data Analysis Library.
+superhelfull and powerfull to perform data analysis on tabular data.
+
+PANDAS: is not in-built so we have to install it.
