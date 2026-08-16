@@ -25,7 +25,7 @@ no_of_correct_states = len(states_data.state.to_list())
 no_of_correct_guesses = 0
 while True:
     # get user ans
-    answer_state = state.textinput(title="Guess the states", prompt="Whats another state's name")
+    answer_state = state.textinput(title=f"Guess the states {no_of_correct_guesses}/50", prompt="Whats another state's name")
 
     # if that user input state exists in table or not
     # print(states_data['state'].str.lower() == answer_state.lower())
