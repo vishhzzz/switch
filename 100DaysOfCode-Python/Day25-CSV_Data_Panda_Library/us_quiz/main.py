@@ -1,5 +1,7 @@
 # if i use 1 turtle then whole thing starts moving as we use goto becoz the image itself is turtle, so we need 2 turtles, one for image and one for writing names
 
+# We should have a secret code via which we can exit
+
 import turtle, pandas
 
 turtle_state_name = turtle.Turtle()
@@ -23,9 +25,13 @@ no_of_correct_states = len(states_data.state.to_list())
 # print(states_data.state.to_list())
 
 no_of_correct_guesses = 0
+guessed_states = []
 while True:
     # get user ans
     answer_state = state.textinput(title=f"Guess the states {no_of_correct_guesses}/50", prompt="Whats another state's name")
+
+    if answer_state == 'exit':
+        break
 
     # if that user input state exists in table or not
     # print(states_data['state'].str.lower() == answer_state.lower())
@@ -43,6 +49,7 @@ while True:
         # turtle.penup()
         turtle_state_name.goto(x=x_cor, y=y_cor)
         turtle_state_name.write(answer_state, align="center", font=("Arial", 16, "normal"))
+        guessed_states.append(answer_state.title())
 
         no_of_correct_guesses += 1
 
@@ -55,5 +62,21 @@ while True:
 turtle_state_name.goto(0, 0)
 turtle_state_name.write("Game Over", align="center", font=("Arial", 16, "normal"))
 print('Game Over')
+
+# we need to generate a csv file which should contain all those names which r missed by user.
+total_states = states_data['state'].to_list()
+missed_states = []
+for state in total_states:
+    if state not in guessed_states:
+        missed_states.append(state)
+# list comprehension
+# missed_states = [state for state in total_states if state not in guessed_states]
+
+csv_data = pandas.DataFrame(missed_states)
+csv_data.to_csv("./Day25-CSV_Data_Panda_Library/us_quiz/missed_state.csv")
+
+
+
+
 state.exitonclick()
 
