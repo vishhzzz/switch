@@ -33,7 +33,7 @@ while True:
     # in series k index ko check krta h thats why .values is imp.
     if answer_state.lower() in states_data['state'].str.lower().values:
         # get co-ordinates of answered data from db
-        x_cor = states_data[states_data['state'].str.lower() == answer_state.lower()].x.iloc[0]
+        x_cor = states_data[states_data['state'].str.lower() == answer_state.lower()].x.iloc[0] #we can also use .x.item() to get hold of value
         y_cor = states_data[states_data['state'].str.lower() == answer_state.lower()].y.iloc[0]
 
         print(x_cor)
