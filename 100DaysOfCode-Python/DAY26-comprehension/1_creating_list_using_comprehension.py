@@ -6,6 +6,7 @@
 # tuple
 # string
 # range
+# dictionary
 
 # List Comprehension: creates a new list from old list.
 
