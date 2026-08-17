@@ -33,3 +33,13 @@ print(new_list) #--> ['v', 'i', 's', 'h', 'a', 'l']
 # Comprehension for range
 new_list = [ele * 2 for ele in range(1, 5)]
 print(new_list)
+
+
+# Condition List Comprehension
+'''
+new_list = [new_ele for ele in list if test_expression]
+'''
+
+names = ['Alex', 'Beth', 'Caroline', 'Dava', 'Elanor', 'Freddie']
+new_list = [name.upper() for name in names if len(name) >= 5]
+print(new_list)
