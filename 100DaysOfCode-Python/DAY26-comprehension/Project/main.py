@@ -22,6 +22,6 @@ word_list = [value for (key, value) in nato_dict.items() if key.lower() in list(
 print(word_list)
 print("============================\n\n")
 # word_list = [nato_dict[ele.upper()] for ele in list(word) if ele.upper() in nato_dict] #last if condition is not necessary becoz we r sure that it will exist in dict.
-word_list = [nato_dict[ele.upper()] for ele in list(word)]
+word_list = [nato_dict[ele.upper()] for ele in word]
 print(word_list)
 print(nato_dict.items())
