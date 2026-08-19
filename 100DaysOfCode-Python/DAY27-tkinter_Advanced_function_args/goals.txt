@@ -1,0 +1,7 @@
+We r going to learn the following:
+1. tkinter - used for creating GUI pages
+2. advanced function - creating default args.
+                     - *args
+                     - **kwargs
+                        : ways of being able to pass multiple inputs into functions.
+3. Unit converter program GUI
