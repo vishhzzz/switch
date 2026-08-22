@@ -1,6 +1,9 @@
 # Canvas widget of tkinter is responsible for adding images on ui.
 # allows to layer things on top of others.
 
+# GUI programs r event driven... they actively listen to events on screen.
+# This is managed and goverend by mainloop.
+
 from tkinter import *
 # ---------------------------- CONSTANTS ------------------------------- #
 PINK = "#e2979c"
@@ -15,8 +18,29 @@ LONG_BREAK_MIN = 20
 # ------------------------------ TIMER RESET ---------------------------------- # 
 
 # ----------------------------- TIMER MECHANISM ------------------------------- # 
+def start_timer():
+    count_down(5*60)
 
 # ------------------------- COUNTDOWN MECHANISM ------------------------------- # 
+# we cant have another loop in my program for GUI.
+# It already runs a loop - mainloop which checks in every ms did something happen.?
+# if we add another loop then it will never reach mainloop.
+
+# tkinter has a method named: after.
+# it takes amount of time it should wait in ms, then after tht amout of time, it calls another function with/without args.
+def count_down(count):
+    min = int(count / 60)
+    sec = int(count % 60)
+    print(min, sec)
+    # this is how we get to text of the canvas
+    # canvas.itemconfig(text, text=count)
+    
+    if sec < 10:
+        canvas.itemconfig(text, text=f"0{min}:0{sec}")
+    else:    
+        canvas.itemconfig(text, text=f"0{min}:{sec}")
+    if count > 0:
+        window.after(1000, count_down, count-1)
 
 # -------------------------------- UI SETUP ----------------------------------- #
 # window
@@ -44,17 +68,14 @@ canvas.create_image(100, 112, image=img)
 canvas.grid(row=1, column=1)
 
 # adding text on top of image
-canvas.create_text(100, 130, text="00:00", fill='white', font=(FONT_NAME, 35, 'bold'))
-
-def button_clicked_start():
-    pass
+text = canvas.create_text(100, 130, text="00:00", fill='white', font=(FONT_NAME, 35, 'bold'))
 
 def button_clicked_reset():
     pass
 
 # Button
 # sometimes for button, there is issue: instead of bg, highlightbackground works.
-start = Button(text='Start', command=button_clicked_start, highlightbackground=YELLOW)
+start = Button(text='Start', command=start_timer, highlightbackground=YELLOW)
 start.grid(row=2, column=0)
 
 # Label
