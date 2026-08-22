@@ -25,6 +25,9 @@ window.title("Pomodoro")
 # we r just seeing tomato image.
 window.config(padx=100, pady=50, bg=YELLOW)
 
+# Label
+timer = Label(text='Timer', bg=YELLOW, fg=GREEN, font=(FONT_NAME, 35, 'normal'))
+timer.grid(row=0, column=1)
 
 # canvas
 canvas = Canvas()
@@ -38,9 +41,29 @@ img = PhotoImage(file='./DAY28-Pomodoro/tomato.png')
 
 # we have devloped the screen of canvas, now its time to add image on top of it.
 canvas.create_image(100, 112, image=img)
-canvas.pack()
+canvas.grid(row=1, column=1)
 
 # adding text on top of image
 canvas.create_text(100, 130, text="00:00", fill='white', font=(FONT_NAME, 35, 'bold'))
+
+def button_clicked_start():
+    pass
+
+def button_clicked_reset():
+    pass
+
+# Button
+# sometimes for button, there is issue: instead of bg, highlightbackground works.
+start = Button(text='Start', command=button_clicked_start, highlightbackground=YELLOW)
+start.grid(row=2, column=0)
+
+# Label
+tick = Label(text='✅', fg=GREEN, bg=YELLOW)
+tick.grid(row=3, column=1)
+
+# Button
+reset = Button(text='Reset', command=button_clicked_reset, 
+    highlightbackground=YELLOW)
+reset.grid(row=2, column=2)
 
 window.mainloop()
