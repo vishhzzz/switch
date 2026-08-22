@@ -20,11 +20,15 @@ timer = None
 
 # ------------------------------ TIMER RESET ---------------------------------- # 
 def reset_timer():
-    global timer
+    global timer, reps
     if timer is not None:
         window.after_cancel(timer)
-        count_down(0*60)
-        timer = None
+
+    canvas.itemconfig(text, text="00:00")
+    timer_text.config(text='Timer', font=(FONT_NAME, 35, 'normal'), fg=GREEN)
+    tick.config(text="")
+    reps = 0
+    timer = None
 
 # ----------------------------- TIMER MECHANISM ------------------------------- # 
 def start_timer():
@@ -34,16 +38,15 @@ def start_timer():
     short_break_sec = SHORT_BREAK_MIN * 60
     long_break_sec = LONG_BREAK_MIN * 60
 
-    if reps == 8:
-        timer.config(text='Break', fg=RED)
+    if reps%8 == 0:
+        timer_text.config(text='Break', fg=RED)
         count_down(long_break_sec)
-
     # if its 1, 3, 5, 7
-    if reps%2 != 0:
-        timer.config(text='Work', fg=GREEN)
+    elif reps%2 != 0:
+        timer_text.config(text='Work', fg=GREEN)
         count_down(work_sec)
-    elif reps%2 == 0: #2, 4, 6
-        timer.config(text='Break', fg=PINK)
+    else: #2, 4, 6
+        timer_text.config(text='Break', fg=PINK)
         count_down(short_break_sec)
 
 # ------------------------- COUNTDOWN MECHANISM ------------------------------- # 
@@ -69,6 +72,8 @@ def count_down(count):
         global timer
         timer = window.after(1000, count_down, count-1)
     elif count == 0:
+        tick_text = '✅' * ((reps+1)//2) #// int division
+        tick.config(text=tick_text)
         start_timer()
 
 # -------------------------------- UI SETUP ----------------------------------- #
@@ -79,8 +84,8 @@ window.title("Pomodoro")
 window.config(padx=100, pady=50, bg=YELLOW)
 
 # Label
-timer = Label(text='Timer', bg=YELLOW, fg=GREEN, font=(FONT_NAME, 35, 'normal'))
-timer.grid(row=0, column=1)
+timer_text = Label(text='Timer', bg=YELLOW, fg=GREEN, font=(FONT_NAME, 35, 'normal'))
+timer_text.grid(row=0, column=1)
 
 # canvas
 canvas = Canvas()
@@ -105,7 +110,7 @@ start = Button(text='Start', command=start_timer, highlightbackground=YELLOW)
 start.grid(row=2, column=0)
 
 # Label
-tick = Label(text='✅', fg=GREEN, bg=YELLOW)
+tick = Label(fg=GREEN, bg=YELLOW)
 tick.grid(row=3, column=1)
 
 # Button
