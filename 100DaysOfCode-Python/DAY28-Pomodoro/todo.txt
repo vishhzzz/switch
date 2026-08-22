@@ -1,0 +1,3 @@
+we will be devloping a pomodoro app.
+With tkinter
+Will also learn about Dynamic Typing in Python.
