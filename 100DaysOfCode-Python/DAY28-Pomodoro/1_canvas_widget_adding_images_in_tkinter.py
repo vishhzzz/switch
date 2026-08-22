@@ -19,7 +19,7 @@ LONG_BREAK_MIN = 20
 
 # ----------------------------- TIMER MECHANISM ------------------------------- # 
 def start_timer():
-    count_down(5*60)
+    count_down(WORK_MIN*60)
 
 # ------------------------- COUNTDOWN MECHANISM ------------------------------- # 
 # we cant have another loop in my program for GUI.
@@ -34,11 +34,12 @@ def count_down(count):
     print(min, sec)
     # this is how we get to text of the canvas
     # canvas.itemconfig(text, text=count)
-    
+
     if sec < 10:
-        canvas.itemconfig(text, text=f"0{min}:0{sec}")
-    else:    
-        canvas.itemconfig(text, text=f"0{min}:{sec}")
+        sec = f"0{sec}"
+    if min < 10:
+        min = f"0{min}"
+    canvas.itemconfig(text, text=f"{min}:{sec}")
     if count > 0:
         window.after(1000, count_down, count-1)
 

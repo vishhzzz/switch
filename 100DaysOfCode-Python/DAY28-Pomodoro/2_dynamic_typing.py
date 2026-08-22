@@ -1,0 +1,1 @@
+# changing variable's data-type by changing its value ----> Dynamic Typing
