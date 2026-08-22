@@ -15,11 +15,36 @@ WORK_MIN = 25
 SHORT_BREAK_MIN = 5
 LONG_BREAK_MIN = 20
 # 8800483748
+reps = 0
+timer = None
+
 # ------------------------------ TIMER RESET ---------------------------------- # 
+def reset_timer():
+    global timer
+    if timer is not None:
+        window.after_cancel(timer)
+        count_down(0*60)
+        timer = None
 
 # ----------------------------- TIMER MECHANISM ------------------------------- # 
 def start_timer():
-    count_down(WORK_MIN*60)
+    global reps
+    reps += 1
+    work_sec = WORK_MIN * 60
+    short_break_sec = SHORT_BREAK_MIN * 60
+    long_break_sec = LONG_BREAK_MIN * 60
+
+    if reps == 8:
+        timer.config(text='Break', fg=RED)
+        count_down(long_break_sec)
+
+    # if its 1, 3, 5, 7
+    if reps%2 != 0:
+        timer.config(text='Work', fg=GREEN)
+        count_down(work_sec)
+    elif reps%2 == 0: #2, 4, 6
+        timer.config(text='Break', fg=PINK)
+        count_down(short_break_sec)
 
 # ------------------------- COUNTDOWN MECHANISM ------------------------------- # 
 # we cant have another loop in my program for GUI.
@@ -41,7 +66,10 @@ def count_down(count):
         min = f"0{min}"
     canvas.itemconfig(text, text=f"{min}:{sec}")
     if count > 0:
-        window.after(1000, count_down, count-1)
+        global timer
+        timer = window.after(1000, count_down, count-1)
+    elif count == 0:
+        start_timer()
 
 # -------------------------------- UI SETUP ----------------------------------- #
 # window
@@ -71,9 +99,6 @@ canvas.grid(row=1, column=1)
 # adding text on top of image
 text = canvas.create_text(100, 130, text="00:00", fill='white', font=(FONT_NAME, 35, 'bold'))
 
-def button_clicked_reset():
-    pass
-
 # Button
 # sometimes for button, there is issue: instead of bg, highlightbackground works.
 start = Button(text='Start', command=start_timer, highlightbackground=YELLOW)
@@ -84,7 +109,7 @@ tick = Label(text='✅', fg=GREEN, bg=YELLOW)
 tick.grid(row=3, column=1)
 
 # Button
-reset = Button(text='Reset', command=button_clicked_reset, 
+reset = Button(text='Reset', command=reset_timer, 
     highlightbackground=YELLOW)
 reset.grid(row=2, column=2)
 
