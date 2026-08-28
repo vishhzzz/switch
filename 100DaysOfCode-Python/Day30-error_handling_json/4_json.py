@@ -102,6 +102,22 @@ def add_password():
             # we also need to clear all field data.
             clear_data_field()
 
+# --------------------------- Search --------------------------------- #
+def search_through_json_file():
+    try:
+        with open("./DAY30-error_handling_json/store_info.json", 'r') as file:
+            content = json.load(file)
+    except FileNotFoundError:
+        messagebox.showerror(title='Oops!!!', message='There is no content in file right now. \nPlease add data first.')
+    else:
+        if website_input.get() in content:
+            messagebox.showinfo(title='Password', message=f"Here's password for following {website_input.get()}. \nUsername: {content[website_input.get()]['username']} \nPassword: {content[website_input.get()]['password']} ")
+
+            pyperclip.copy(content[website_input.get()]['password'])
+        else:
+            messagebox.showinfo(title='Password', message=f'There is no entry for {website_input.get()}')
+    finally:
+        clear_data_field()
 
 # ---------------------------- UI SETUP ------------------------------- #
 window = Tk()
@@ -137,8 +153,8 @@ password = Label(text='Password:')
 password.grid(row=3, column=0, sticky="e")
 
 # inputs
-website_input = Entry(width=35)
-website_input.grid(row=1, column=1, columnspan=2, sticky="ew")
+website_input = Entry(width=20)
+website_input.grid(row=1, column=1, sticky="ew")
 website_input.focus() #so that as soon as user opens the app, cursor should be at this field.
 
 email_username_input = Entry(width=35)
@@ -158,5 +174,8 @@ gen_pass.grid(row=3, column=2, sticky="ew")
 
 add = Button(text='Add', width=36, command=add_password)
 add.grid(row=4, column=1, columnspan=2, sticky="ew")
+
+search = Button(text='Search', width=15, command=search_through_json_file)
+search.grid(row=1, column=2, sticky='ew')
 
 window.mainloop()
