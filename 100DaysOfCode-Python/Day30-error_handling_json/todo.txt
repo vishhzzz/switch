@@ -1,0 +1,7 @@
+We will look forward to study about Error Catching, Exception handling.
+
+Also will look into JSON.
+
+JSON is widely used data formats for transferring data across the Internet btw applications 
+
+We will modify password manager in such a way that we can search through the db for password for particular website. We'll handle exceptions too.
