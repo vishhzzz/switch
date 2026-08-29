@@ -1,0 +1,5 @@
+We will be sending mail via Python code using Email SMTP module.
+
+We will also learn about Date Time module of Python.
+
+ 
