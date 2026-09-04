@@ -58,6 +58,7 @@ class Quizzler:
         self.window.mainloop()
 
     def get_next_question(self):
+        self.canvas.config(bg='white')
         q_text = self.quiz.next_question()
         self.canvas.itemconfig(self.text, text=q_text)
 
@@ -70,7 +71,7 @@ class Quizzler:
         else:
             self.canvas.config(bg='red')
 
-        self.window.after(1000, self.next_ques)
+        self.window.after(1000, self.get_next_question)
 
         
 
@@ -83,9 +84,4 @@ class Quizzler:
         else:
             self.canvas.config(bg='red')
 
-        self.window.after(1000, self.next_ques)
-
-
-    def next_ques(self):
-        self.canvas.config(bg='white')
-        self.get_next_question()
+        self.window.after(1000, self.get_next_question)
