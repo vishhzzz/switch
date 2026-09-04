@@ -66,9 +66,26 @@ class Quizzler:
         if q_ans:
             self.quiz.score += 1
             self.label.config(text=f"Score: {self.quiz.score}")
+            self.canvas.config(bg='green')
+        else:
+            self.canvas.config(bg='red')
+
+        self.window.after(1000, self.next_ques)
+
+        
 
     def false_clicked(self):
         q_ans = self.quiz.check_answer('false')
         if q_ans:
             self.quiz.score += 1
             self.label.config(text=f"Score: {self.quiz.score}")
+            self.canvas.config(bg='green')
+        else:
+            self.canvas.config(bg='red')
+
+        self.window.after(1000, self.next_ques)
+
+
+    def next_ques(self):
+        self.canvas.config(bg='white')
+        self.get_next_question()
