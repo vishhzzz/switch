@@ -47,10 +47,10 @@ class Quizzler:
         false = false.resize((100, 100))
         false = ImageTk.PhotoImage(false)
 
-        true_button = Button(self.window, image=true, command=self.true_clicked, highlightthickness=0)
-        true_button.grid(row=2, column=0)
-        false_button = Button(self.window, image=false, command=self.false_clicked, highlightthickness=0)
-        false_button.grid(row=2, column=1)
+        self.true_button = Button(self.window, image=true, command=self.true_clicked, highlightthickness=0)
+        self.true_button.grid(row=2, column=0)
+        self.false_button = Button(self.window, image=false, command=self.false_clicked, highlightthickness=0)
+        self.false_button.grid(row=2, column=1)
 
         # fetch and display next question
         self.get_next_question()
@@ -58,13 +58,15 @@ class Quizzler:
         self.window.mainloop()
 
     def get_next_question(self):
+        self.canvas.config(bg='white')
         if self.quiz.still_has_questions():
-            self.canvas.config(bg='white')
             q_text = self.quiz.next_question()
             self.canvas.itemconfig(self.text, text=q_text)
         else:
-            self.canvas.config(bg='white')
             self.canvas.itemconfig(self.text, text='You have reached the end of Quiz.')
+            # disable buttons
+            self.true_button.config(state='disabled')
+            self.false_button_button.config(state='disabled')
 
     def true_clicked(self):
         q_ans = self.quiz.check_answer('true')
