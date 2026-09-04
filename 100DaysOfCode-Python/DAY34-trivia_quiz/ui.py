@@ -58,9 +58,13 @@ class Quizzler:
         self.window.mainloop()
 
     def get_next_question(self):
-        self.canvas.config(bg='white')
-        q_text = self.quiz.next_question()
-        self.canvas.itemconfig(self.text, text=q_text)
+        if self.quiz.still_has_questions():
+            self.canvas.config(bg='white')
+            q_text = self.quiz.next_question()
+            self.canvas.itemconfig(self.text, text=q_text)
+        else:
+            self.canvas.config(bg='white')
+            self.canvas.itemconfig(self.text, text='You have reached the end of Quiz.')
 
     def true_clicked(self):
         q_ans = self.quiz.check_answer('true')
