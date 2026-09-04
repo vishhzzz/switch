@@ -15,8 +15,9 @@ class QuizBrain:
         self.current_question = self.question_list[self.question_number]
         self.question_number += 1
         # html.unescape is to normalize the text issue of symbols and certain characters.
-        user_answer = input(f"Q.{self.question_number}: {html.unescape(self.current_question.text)} (True/False): ")
-        self.check_answer(user_answer)
+        user_answer = f"Q.{self.question_number}: {html.unescape(self.current_question.text)}? "
+        return user_answer
+        # self.check_answer(user_answer)
 
     def check_answer(self, user_answer):
         correct_answer = self.current_question.answer

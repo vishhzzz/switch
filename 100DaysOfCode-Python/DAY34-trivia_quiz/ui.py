@@ -8,13 +8,17 @@ We attach self to those which we were gonna use later.
 # import tkinter or
 from tkinter import *
 from PIL import Image, ImageTk
+from quiz_brain import QuizBrain
 
 THEME_COLOR = "#375362"
 MY_FONT = ('Arial', 20, 'italic')
 
 class Quizzler:
 
-    def __init__(self, question_bank):
+    # we could have just passed quiz but by doing this we r helping user as now if someone tries to pass something other than quizbrain then it will get an error and also
+    # by doing this: user gets to see all the methods of this class in this file while writing.
+    def __init__(self, quiz : QuizBrain):
+        self.quiz = quiz
         self.window = Tk()
         self.window.title('Quizz App')
         self.window.config(padx=20, pady=20, bg=THEME_COLOR)
@@ -25,7 +29,14 @@ class Quizzler:
 
         self.canvas = Canvas()
         self.canvas.config(width=300, height=250, bg='white')
-        self.text = self.canvas.create_text(150, 125, text=question_bank[0].text, font=MY_FONT, fill=THEME_COLOR) #fill is color of text.
+        self.text = self.canvas.create_text(
+            150, 
+            125,
+            width=280,#text-wrap : question will not go out of boundaries
+            text='dummy_text', 
+            font=MY_FONT, 
+            fill=THEME_COLOR
+        ) #fill is color of text.
         self.canvas.grid(row=1, column=0, columnspan=2, pady= 50)
 
         true = Image.open('./DAY34-trivia_quiz/images/true.png')
@@ -41,7 +52,14 @@ class Quizzler:
         false_button = Button(self.window, image=false, command=self.false_clicked, highlightthickness=0)
         false_button.grid(row=2, column=1)
 
+        # fetch and display next question
+        self.get_next_question()
+
         self.window.mainloop()
+
+    def get_next_question(self):
+        q_text = self.quiz.next_question()
+        self.canvas.itemconfig(self.text, text=q_text)
 
     def true_clicked():
         pass
