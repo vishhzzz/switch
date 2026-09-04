@@ -61,7 +61,14 @@ class Quizzler:
         q_text = self.quiz.next_question()
         self.canvas.itemconfig(self.text, text=q_text)
 
-    def true_clicked():
-        pass
-    def false_clicked():
-        pass
+    def true_clicked(self):
+        q_ans = self.quiz.check_answer('true')
+        if q_ans:
+            self.quiz.score += 1
+            self.label.config(text=f"Score: {self.quiz.score}")
+
+    def false_clicked(self):
+        q_ans = self.quiz.check_answer('false')
+        if q_ans:
+            self.quiz.score += 1
+            self.label.config(text=f"Score: {self.quiz.score}")
