@@ -1,0 +1,20 @@
+'''
+Authenticating ourself with api provider.
+
+There r 2 types of API:
+    free
+    paid
+
+Some APIs are provided freely becoz the data that they serve is not something which can be used to create some fancy applications.
+Some are paid or very likely limited becoz of the above reason.
+
+so paid ones which works on money basis often provide us a free version but with a lot of usage restriction and often needs a authentication.
+
+Free ones more often has a high chance of abusing, one way to stop/limit this abusing is via 'API KEY'.
+
+API KEY - personal acc. no. and password. 
+        - also a way via which api provider tracks yr usage and may limit it incase of abuse.
+
+API simply is a way of selling DATA to users.
+'''
+

@@ -1,0 +1,13 @@
+Learn:
+1. API keys
+2. Authentication
+3. Environment Variables
+4. Sending SMS
+
+We will learn about authenticating ourself with api provider inorder to gain more precious data.
+
+Using API like twilio to send sms via python to ourselves.
+
+Environment Variables and their role in safely storing API keys.
+
+Rain Alert Application...
