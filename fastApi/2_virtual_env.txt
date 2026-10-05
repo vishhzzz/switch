@@ -1,0 +1,29 @@
+Virtual Environment
+-   simply a folder that keeps a project's Python packages seperate from other projects.
+-   helps when diff. projects need diff. version of same package.
+-   In python, for every project that u create, u'll get a seperate Virtual Environment.
+
+-   Yr comp.
+            -   project A 
+                    -   .venv
+                            -   packages: fastAPI v2
+            -   project B
+                    -   .venv
+                            -   packages: fastAPI v5
+
+Creating Virtual Environment
+-   Python makes a folder containing:
+    -   copy of or link to a Python Executable.
+    -   configuration and scripts that help u use the environment.
+    -   directory for that environment's installed packages.
+-   when u 'activate' an environment, yr terminal is so adjusted that typing 'python' selects that env's python.
+-   python knows where its own packages r stored.
+
+Creating Virtual Environment
+-   python3 -m venv <name of Virtual Env.>
+
+Activating Virtual Environment
+-   source venv/bin/activate  
+
+Project ?
+-   project here means files that belong to 1 app, script or piece of work.
