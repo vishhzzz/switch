@@ -1,0 +1,3 @@
+pip freeze ---> to list down all the dependencies which is there on that particular environment.
+
+When we install any package via pip, then they can be seen in lib folder of venv.
