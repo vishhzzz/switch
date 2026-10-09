@@ -1,6 +1,7 @@
 # uvicorn is the server - listens for web requests, passes them to fastapi app and sends the app's response back. Handles the network connection so requests can reach the app.
 
 from fastapi import FastAPI
+from fastapi.params import Body
 
 # app here is an instance of FastAPI.
 app = FastAPI()
@@ -60,3 +61,12 @@ def get_posts():
 # So for 2 consecutive same endpoints - 1 first one wins.
 
 # API - order does matters.
+
+
+# POST request - creating post
+@app.post("/create_post")
+def creating_post(payload: dict = Body(...)):
+    print(payload)
+    return {"new_post": f"title: {payload['title']}, content: {payload['content']}"}
+
+# THis is how we extract data from body of payload.
