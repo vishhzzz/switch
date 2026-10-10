@@ -12,16 +12,23 @@ class Post(BaseModel):
     published: bool = True
     rating: Optional[int] = None
 
+# we r going to save the posts ideally in DB but right now in memory.
+# it will be an array, array of posts and each post is a dictionary.
+# We will be adding another field called id becoz in crud based operations we do need to deal with individual posts.
+my_posts = [{'title': "title1", 'content': "content1", 'id': 1}, {'title': "title1", 'content': "content1", 'id': 2}]
+
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
 
 @app.get("/posts")
 def get_posts():
-    return {"post": "This is your post."}
+    # return {"post": "This is your post."}
+    # instead of this, we need to return the posts that we saved above.
+    return {'post': my_posts} #it automatically serializes it into JSON.
 
 # POST request - creating post
-@app.post("/create_post")
+@app.post("/posts") #good practice to have a better plural name
 # def creating_post(payload: dict = Body(...)):
 def creating_post(posts: Post):
     print(posts)
