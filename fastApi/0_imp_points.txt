@@ -1,3 +1,12 @@
 pip freeze ---> to list down all the dependencies which is there on that particular environment.
 
 When we install any package via pip, then they can be seen in lib folder of venv.
+
+Package is a fancy word for folder in Python.
+For any folder to be called a 'Package', it just needs a file with name '__init__.py'. 
+
+In order to run a file which is inside a package or simply folder, we put the name of package and put . then the file to run.
+uvicorn app.main:app --reload
+here app is package, look for main inside that package. 
+
+
