@@ -1,0 +1,66 @@
+; at the end of query is mandatory otherwise it will not run.
+
+Mostly SQL is 'Case Insensitive'. SQL related key-words r case-insesitive but user provided info is Case Sensitive. 
+
+select * from products;    --->   give me entire products table.
+                           --->   select every columns of products table.
+                           --->   * means every single columns.
+
+select id, name, price from products; ---> jis order m hmne columns die h usi order m ye return krega.
+
+We can rename any Column via SQL query using 'As' keyword.
+select id as products_id from products;
+
+this renaming is 'Temperory'.
+It just provides the alias name thats it.
+It can temporarily rename a table too.
+
+select * from products where id = 5; ---> will fetch u the row where id is 5
+
+For not either use : != 
+or
+                     <> 
+
+SELECT * FROM products WHERE inventory != 0
+SELECT * FROM products WHERE inventory <> 0
+
+multiple operations
+SELECT * FROM products WHERE inventory > 0 AND price >= 10;
+
+
+IN keyword
+SELECT * FROM products WHERE id = 1 OR id = 2 or id = 3;
+-- similar command ---> IN
+SELECT * FROM products WHERE id IN (1, 2, 3, 4);
+
+
+if we want to fetch those rows which has name starting from same word.
+SELECT * FROM products WHERE name LIKE ('TV%'); will fetch all the rows where name starts from TV.
+
+SELECT * FROM products WHERE name LIKE ('%e'); grab all rows where name ends with 'e'.
+
+SELECT * FROM products WHERE name LIKE ('%en%'); ---> will fetch u all those names which contains en in their name.
+
+we can specify Postgres about in which order u wanna see the products.
+SELECT * FROM products ORDER BY price;  ---> by default ascending order.
+SELECT * FROM products ORDER BY price ASC; same as above.
+SELECT * FROM products ORDER BY prices DESC; ---> descending order.
+
+
+SELECT * FROM products ORDER BY inventory OR price DESC; ---> wrong
+SELECT * FROM products ORDER BY inventory, price DESC; ---> 1st will sort according to inventory in ascending order if 2 contains same then will sort according to price in descending order.
+
+
+-- chaining
+SELECT * FROM products WHERE price >= 20 ORDER BY created_at DESC;
+
+we can limit the amount of rows
+-- chaining
+SELECT * FROM products LIMIT 4;
+
+
+this will give first 3 results.
+SELECT * FROM products ORDER BY id LIMIT 3;
+
+suppose i dont want ist 2 results or rows, i just want results after 1st 2 rows
+SELECT * FROM products ORDER BY id LIMIT 3 OFFSET 2;
