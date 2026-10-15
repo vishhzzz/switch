@@ -64,3 +64,14 @@ SELECT * FROM products ORDER BY id LIMIT 3;
 
 suppose i dont want ist 2 results or rows, i just want results after 1st 2 rows
 SELECT * FROM products ORDER BY id LIMIT 3 OFFSET 2;
+
+to add brand new entry to DB, SQL command:
+INSERT INTO products (name, price) VALUES ('bike', 789);
+
+INSERT 0 1  <--- when row is inserted successfully. 1 means inserted successfully.
+
+The order of columns must match with order of values.
+
+In POST request, its a general convention to return the newly created Data.
+So here also when we add a new row, we can mimic that:
+INSERT INTO products (name, id, inventory) VALUES ('iPhone', 433, 5) RETURNING *;
