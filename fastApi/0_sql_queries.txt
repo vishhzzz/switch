@@ -75,3 +75,8 @@ The order of columns must match with order of values.
 In POST request, its a general convention to return the newly created Data.
 So here also when we add a new row, we can mimic that:
 INSERT INTO products (name, id, inventory) VALUES ('iPhone', 433, 5) RETURNING *;
+
+
+DELETE
+In order to delete a row from a table use:
+DELETE FROM products WHERE id = 10;
