@@ -80,3 +80,6 @@ INSERT INTO products (name, id, inventory) VALUES ('iPhone', 433, 5) RETURNING *
 DELETE
 In order to delete a row from a table use:
 DELETE FROM products WHERE id = 10;
+
+UPDATE
+UPDATE products SET name = 'Vishal', price = 30 WHERE id = 3;
