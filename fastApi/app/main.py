@@ -1,11 +1,12 @@
-# Updating individual post.
-
+# DB Integration
 
 from fastapi import FastAPI, Response, status, HTTPException 
 from fastapi.params import Body #take out content from body.
 from pydantic import BaseModel  #creating API schema.
 from typing import Optional
 from random import randrange
+import psycopg
+import time
 
 app = FastAPI()
 
@@ -15,6 +16,30 @@ class Post(BaseModel):
     content: str
     published: bool = True
     rating: Optional[int] = None
+
+# we will do DB operations here and it is very likely that these operations may fail.
+# Thus, using try catch for safer side.
+while True:
+    try:
+        # connecting to DB via connect
+        # right now, this is very bad practise for keeping things like this, we will use environment variable to store sensitive data perfectly.
+        conn = psycopg.connect(host="localhost",
+            dbname="fastapi",
+            user='postgres',
+            password='vishal',
+        )
+
+        # opening cursor to perform DB operations
+        cur = conn.cursor()
+        print("connecting to DB succeeded !!!")
+        break
+
+    except Exception as error:
+        print(f"Connecting to DB failed, error: {error}")
+
+        # before retrying, we would like to wait for few seconds.
+        time.sleep(2) #will sleep for 2 seconds.
+
 
 # acting DB
 my_posts = [{'title': "title1", 'content': "content1", 'id': 1}, {'title': "title2", 'content': "content2", 'id': 2}]
@@ -31,7 +56,11 @@ def get_posts():
     '''
     Retrieving Posts.
     '''
-    return {'post': my_posts}
+    cur.execute("""SELECT * FROM posts""") #execute returns the cursor itself, so no need to store it in posts.
+    #print(posts) #this will not print what we want, we need to use dedicated functions which shows the rows.
+    posts = cur.fetchall()
+    print(posts)
+    return {'post': posts}
 
 @app.post("/posts", status_code=status.HTTP_201_CREATED)
 def creating_post(posts: Post):
