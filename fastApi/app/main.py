@@ -67,10 +67,20 @@ def creating_post(posts: Post):
     '''
     Create Posts.
     '''
-    posts_dict = posts.dict()
-    posts_dict['id'] = randrange(1, 10000000)
-    my_posts.append(posts_dict)
-    return {"data": posts_dict}
+    # this was without DB
+    # posts_dict = posts.dict()
+    # posts_dict['id'] = randrange(1, 10000000)
+    # my_posts.append(posts_dict)
+
+    # with DB
+    cur.execute("""INSERT INTO posts (title, content, published) VALUES (%s, %s, %s) RETURNING * """, (posts.title, posts.content, posts.published))
+
+    new_post = cur.fetchone()
+
+    # still this post will not be saved inside the db, we need to run one more command i.e., commit.
+    conn.commit()
+
+    return {"data": new_post}
 
 @app.get("/posts/{id}")
 def get_post(id:int, response:Response): 
