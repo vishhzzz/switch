@@ -112,8 +112,7 @@ def delete_post(id:int, response:Response):
     cur.execute("""DELETE FROM posts WHERE id = %s RETURNING *""", (id, ))
     deleted_post = cur.fetchone()
     conn.commit()
-# pl - 9.85
-# od - 10-11 sameer
+
     if deleted_post is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail=f"No post with id {id} found!!!")
 
@@ -124,8 +123,11 @@ def update_post(id:int, post:Post):
     '''
     Updating Post
     '''
-    for idx, dic in enumerate(my_posts):
-        if dic['id'] == id:
-            my_posts[idx] = post.dict()
-            return {'message': post}
-    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+    cur.execute("""UPDATE posts SET title = %s, content = %s, published = %s WHERE id = %s RETURNING *""", (post.title, post.content, post.published, id,))
+    updated_post = cur.fetchone()
+    conn.commit()
+
+    if not updated_post:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Post with id {id} not found.")
+
+    return {'message': updated_post}
