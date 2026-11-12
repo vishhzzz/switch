@@ -108,14 +108,16 @@ def delete_post(id:int, response:Response):
     '''
     Deleting Individual Post
     '''
-    for dic in my_posts:
-        if dic['id'] == id:
-            my_posts.remove(dic) #delete that id wali post
-            # return {"posts": my_posts} - We should not sending any kind of data when we r sending 204.
-            return Response(status_code=status.HTTP_204_NO_CONTENT) 
 
-    # no matching id
-    raise HTTPException(status.HTTP_404_NOT_FOUND, f"No post with id {id} found!!!")
+    cur.execute("""DELETE FROM posts WHERE id = %s RETURNING *""", (id, ))
+    deleted_post = cur.fetchone()
+    conn.commit()
+# pl - 9.85
+# od - 10-11 sameer
+    if deleted_post is None:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, detail=f"No post with id {id} found!!!")
+
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 @app.put("/post/{id}")
 def update_post(id:int, post:Post):
