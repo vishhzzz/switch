@@ -87,11 +87,21 @@ def get_post(id:int, response:Response):
     '''
     Retrieving Individual Post
     '''
-    for dic in my_posts:
-        if dic['id'] == id:
-            return {'post': dic}
+    # without DB
+    # for dic in my_posts:
+    #     if dic['id'] == id:
+    #         return {'post': dic}
 
-    raise HTTPException(status.HTTP_404_NOT_FOUND, f"post with id {id} is not present.")
+    # raise HTTPException(status.HTTP_404_NOT_FOUND, f"post with id {id} is not present.")
+
+    # with DB
+    cur.execute("""SELECT * FROM posts WHERE id = %s""", (id,)) #it needs tuple and rejects plain string.
+    post = cur.fetchone()
+    if not post:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, f"post with id {id} is not present.")
+    
+    return {"post_detail": post}
+
 
 @app.delete("/del_post/{id}", status_code = status.HTTP_204_NO_CONTENT)
 def delete_post(id:int, response:Response):
