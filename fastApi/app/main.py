@@ -1,14 +1,15 @@
 # DB Integration
 
-from fastapi import FastAPI, Response, status, HTTPException 
+from fastapi import FastAPI, Response, status, HTTPException, Depends
 from fastapi.params import Body #take out content from body.
 from pydantic import BaseModel  #creating API schema.
 from typing import Optional
 from random import randrange
 import psycopg
 import time
-from app.database import engine, SessionLocal
+from app.database import engine, SessionLocal, get_db
 from app import models
+from sqlalchemy.orm import Session
 
 # NOTE: if i do something like this -- import app.database.engine
 # then it creates a variable called app in my file which points to the package
@@ -25,17 +26,13 @@ models.Base.metadata.create_all(bind=engine) # Create every table defined in my 
 
 # here dot simply represents the file go through i.e., go inside models and get Base and so on...
 
+# we need to pass a path param in path operations or api endpoints.
+# Session = Depends(get_db)
+# going to create session for us to our DB, we can perform some operations and then close it once the request is done.
+
+# As it is a path param embedded in path operations, we can repeat that process for every single one of our path operations.
+
 app = FastAPI()
-
-# dependency
-def get_db():
-    db = SessionLocal()
-
-    try:
-        yield db
-    finally:
-        db.close()
-
 
 # API schema - class
 class Post(BaseModel):
@@ -158,3 +155,7 @@ def update_post(id:int, post:Post):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Post with id {id} not found.")
 
     return {'message': updated_post}
+
+@app.get('/sqlalchemy')
+def test_posts(db: Session = Depends(get_db)):
+    return {"status": "success"}
