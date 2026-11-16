@@ -7,8 +7,35 @@ from typing import Optional
 from random import randrange
 import psycopg
 import time
+from app.database import engine, SessionLocal
+from app import models
+
+# NOTE: if i do something like this -- import app.database.engine
+# then it creates a variable called app in my file which points to the package
+# Later app = FastAPI() overwrites it.
+
+models.Base.metadata.create_all(bind=engine) # Create every table defined in my models in the DB, if it doesn't already exists.
+# models ---> models.py file
+# .Base  ---> the Base class from database.py, which models.py imported.
+# .metadata ---> registry inside Base that records every class inheriting from it.
+# .create_all(...) ---> Turns everything in that registry into CREATE TABLE SQL and runs it.
+# bind=engine ---> whcih DB to run it on.
+
+# create_all ---> creates the table only if its not already been created.
+
+# here dot simply represents the file go through i.e., go inside models and get Base and so on...
 
 app = FastAPI()
+
+# dependency
+def get_db():
+    db = SessionLocal()
+
+    try:
+        yield db
+    finally:
+        db.close()
+
 
 # API schema - class
 class Post(BaseModel):
