@@ -158,4 +158,9 @@ def update_post(id:int, post:Post):
 
 @app.get('/sqlalchemy')
 def test_posts(db: Session = Depends(get_db)):
-    return {"status": "success"}
+    # will use query method in order to get to the relevant table
+    all_posts = db.query(models.Post).all() # as right now it is for test purpose, we need to see whole table (all rows), we'll use all
+    return {"data": all_posts}
+
+# NOTE how simple it is  - just get hold of db which knows about creating session, then tap into query method, specify which table/model in terms of python. and then specify the type of action u need to perform.
+# This query object just performing SQL. It abstracts all the SQL away.
