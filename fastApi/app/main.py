@@ -163,19 +163,50 @@ def get_post(id:int, response:Response, db: Session = Depends(get_db)):
 
 
 @app.delete("/del_post/{id}", status_code = status.HTTP_204_NO_CONTENT)
-def delete_post(id:int, response:Response):
+def delete_post(id:int, response:Response, db: Session = Depends(get_db)):
     '''
     Deleting Individual Post
     '''
 
-    cur.execute("""DELETE FROM posts WHERE id = %s RETURNING *""", (id, ))
-    deleted_post = cur.fetchone()
-    conn.commit()
+    # RAW SQL
+    # cur.execute("""DELETE FROM posts WHERE id = %s RETURNING *""", (id, ))
+    # deleted_post = cur.fetchone()
 
-    if deleted_post is None:
+    post = db.query(models.Post).filter(models.Post.id == id)
+
+    # we need post query now and will perform certain operations later
+    # right now, no query has been executed, it is .first or .one which will execute the query.
+    if post.first() is None: #will check the very 1st occurence of the received results.
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail=f"No post with id {id} found!!!")
 
+    post.delete(synchronize_session=False)
+    db.commit()
     return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+# NOTE db - session ki ek apni choti si memory hoti h, jb jb hm DB s koi post laate h, session uski ek copy apne paas rkh leta h post= db.query(models.Post).filter(models.Post.id == 5).first()
+# ab hmare ps do jgh post 5 h, i. DB - asli wala, ii. Session ki memory m - copy
+
+# PROBLEM
+# Whenever we do 'query.delete', ORM just simply sends DELETE command to DB without conveying this to SESSION and hence uske paas jo copy hoti h usme update hi ni ho pata.
+
+# SYNCHRONIZE_SESSION
+# memory ka kya krna h???   ---   delete k baad session ki memory ko update krna h ya ni aur kaise.
+# synchronize_session=False  ---> Memory ko chodo, kuch mt kro, very fast
+# synchronize_session=evaluate ---> Memory m jo bhi objects h, unpr Python m hi WHERE condition check kro aur matching wale hta do 
+# synchronize_session=fetch ---> Pehle DB s pucho kon kon s rows delete hue h and exactly whi session s hta do.
+# synchronize_session=auto ---> first try evaluate and then try fetch :::: default in sqlalchemy 2.0
+
+# Here in my case, i have used 'synchronize_session=False' becauze my get_db creates a new session for each request, and will close that session upon request completion.
+# We r not reading or using again after runing delete, simply returning. Now even if memory contains wrong info its not of any use.
+# It would have been an issue if after deleting, on that request only i am using that post only.
+
+
+# DELETE - 2 ways
+# 1. query s delete -- jo upr kr rhe h
+# 2. object s delete 
+# post = db.query(models.Post).filter(models.Post.id == id).first()
+# db.delete(post) ---> now we r informing session about delete.
+
 
 @app.put("/post/{id}")
 def update_post(id:int, post:Post):
