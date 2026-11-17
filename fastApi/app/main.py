@@ -27,7 +27,7 @@ models.Base.metadata.create_all(bind=engine) # Create every table defined in my 
 # here dot simply represents the file go through i.e., go inside models and get Base and so on...
 
 # we need to pass a path param in path operations or api endpoints.
-# Session = Depends(get_db)
+# Session = Depends(get_db) --> will create dependency.
 # going to create session for us to our DB, we can perform some operations and then close it once the request is done.
 
 # As it is a path param embedded in path operations, we can repeat that process for every single one of our path operations.
@@ -76,13 +76,17 @@ async def root():
     return {"message": "Hello World"}
 
 @app.get("/posts")
-def get_posts():
+def get_posts(db: Session = Depends(get_db)):
     '''
     Retrieving Posts.
     '''
-    cur.execute("""SELECT * FROM posts""") #execute returns the cursor itself, so no need to store it in posts.
-    #print(posts) #this will not print what we want, we need to use dedicated functions which shows the rows.
-    posts = cur.fetchall()
+    # RAW SQL
+    # cur.execute("""SELECT * FROM posts""") #execute returns the cursor itself, so no need to store it in posts.
+    # #print(posts) #this will not print what we want, we need to use dedicated functions which shows the rows.
+    # posts = cur.fetchall()
+    
+    # ORM
+    posts = db.query(models.Post).all()
     print(posts)
     return {'post': posts}
 
