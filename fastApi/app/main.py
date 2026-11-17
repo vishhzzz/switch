@@ -129,7 +129,7 @@ def creating_post(posts: Post, db: Session = Depends(get_db)):
     return {"data": new_post}
 
 @app.get("/posts/{id}")
-def get_post(id:int, response:Response): 
+def get_post(id:int, response:Response, db: Session = Depends(get_db)): 
     '''
     Retrieving Individual Post
     '''
@@ -140,9 +140,22 @@ def get_post(id:int, response:Response):
 
     # raise HTTPException(status.HTTP_404_NOT_FOUND, f"post with id {id} is not present.")
 
-    # with DB
-    cur.execute("""SELECT * FROM posts WHERE id = %s""", (id,)) #it needs tuple and rejects plain string.
-    post = cur.fetchone()
+    # with DB - Raw SQL
+    # cur.execute("""SELECT * FROM posts WHERE id = %s""", (id,)) #it needs tuple and rejects plain string.
+    # post = cur.fetchone()
+    
+    # ORM
+    post = db.query(models.Post).filter(models.Post.id == id).first() #filter is same as WHERE
+    # we can either do one or first.
+    # one -> returns the row if found and if its not found then raises the exception - NoResultFound
+    # if multiple found --> raises MultipleResultsFound
+    # first -> returns the row if found and if not found then returns NONE.
+    # if multiple found --> returns the 1st row
+    # There is also one more option here: we can use one_or_none()
+    # one_or_none -> returns the row if found and if not found then returns NONE.
+    # if multiple found --> raises MultipleResultsFound
+
+
     if not post:
         raise HTTPException(status.HTTP_404_NOT_FOUND, f"post with id {id} is not present.")
     
