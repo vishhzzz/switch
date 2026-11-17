@@ -39,7 +39,7 @@ class Post(BaseModel):
     title: str
     content: str
     published: bool = True
-    rating: Optional[int] = None
+    # rating: Optional[int] = None
 
 # we will do DB operations here and it is very likely that these operations may fail.
 # Thus, using try catch for safer side.
@@ -91,7 +91,7 @@ def get_posts(db: Session = Depends(get_db)):
     return {'post': posts}
 
 @app.post("/posts", status_code=status.HTTP_201_CREATED)
-def creating_post(posts: Post):
+def creating_post(posts: Post, db: Session = Depends(get_db)):
     '''
     Create Posts.
     '''
@@ -100,13 +100,31 @@ def creating_post(posts: Post):
     # posts_dict['id'] = randrange(1, 10000000)
     # my_posts.append(posts_dict)
 
-    # with DB
-    cur.execute("""INSERT INTO posts (title, content, published) VALUES (%s, %s, %s) RETURNING * """, (posts.title, posts.content, posts.published))
+    # with DB - RAW SQL
+    # cur.execute("""INSERT INTO posts (title, content, published) VALUES (%s, %s, %s) RETURNING * """, (posts.title, posts.content, posts.published))
 
-    new_post = cur.fetchone()
+    # new_post = cur.fetchone()
 
-    # still this post will not be saved inside the db, we need to run one more command i.e., commit.
-    conn.commit()
+    # # still this post will not be saved inside the db, we need to run one more command i.e., commit.
+    # conn.commit()
+
+    # ORM
+    # assigning individually is little ineffecient
+    # new_post = models.Post(title = posts.title, content = posts.content, published = posts.published)
+
+    # posts.dict()
+    # → {'title': 'Hello', 'content': 'World', 'published': True, 'rating': None}
+    #models.Post(**{'title': 'Hello', 'content': 'World', 'published': True})
+
+    # ** dictionary ko kholke har key-value ko key=value ki tarah function mein bhej deta ha
+    
+    # # Python isko internally aise padhta hai 👇
+    # models.Post(title='Hello', content='World', published=True)
+
+    new_post = models.Post(**posts.dict()) #this will unpack and do the same.
+    db.add(new_post) # add this entry to DB
+    db.commit() # commit into DB
+    db.refresh(new_post) #get back the created post, store it into new_post.
 
     return {"data": new_post}
 
