@@ -209,18 +209,31 @@ def delete_post(id:int, response:Response, db: Session = Depends(get_db)):
 
 
 @app.put("/post/{id}")
-def update_post(id:int, post:Post):
+def update_post(id:int, post:Post, db: Session=Depends(get_db)):
     '''
     Updating Post
     '''
-    cur.execute("""UPDATE posts SET title = %s, content = %s, published = %s WHERE id = %s RETURNING *""", (post.title, post.content, post.published, id,))
-    updated_post = cur.fetchone()
-    conn.commit()
+    # cur.execute("""UPDATE posts SET title = %s, content = %s, published = %s WHERE id = %s RETURNING *""", (post.title, post.content, post.published, id,))
+    # updated_post = cur.fetchone()
+    # conn.commit()
 
-    if not updated_post:
+    updated_post = db.query(models.Post).filter(models.Post.id == id)
+
+    updated_post_first = updated_post.first()
+
+    if not updated_post_first:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Post with id {id} not found.")
 
-    return {'message': updated_post}
+    # pass items as dictionary
+    # updated_post.update({'title': '6th post', 'content': 'This is my 6th post.'}, synchronize_session=False)
+    # or
+    updated_post.update(post.dict(), synchronize_session=False)
+
+    db.commit()
+
+    # return {'message': 'successfulllll'}
+    # or
+    return {'message': updated_post.first()}
 
 @app.get('/sqlalchemy')
 def test_posts(db: Session = Depends(get_db)):
