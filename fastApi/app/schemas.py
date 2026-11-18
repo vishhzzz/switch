@@ -1,4 +1,4 @@
-from pydantic import BaseModel #creating API schema.
+from pydantic import BaseModel, EmailStr #creating API schema.
 
 # API schema - class
 # class Post(BaseModel):
@@ -43,3 +43,7 @@ class PostResponse(PostBase):
     # here because Fastapi jb response model s response validate krta h to khud s from_attributes=True lga deta h 
     # iska kaam kya h ?
     # simply tell Pydantic Model to read the data even if its not a dict., but an ORM model
+
+class UserCreate(BaseModel):
+    email: EmailStr
+    password: str

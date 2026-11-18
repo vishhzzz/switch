@@ -9,7 +9,7 @@ import time
 from app.database import engine, SessionLocal, get_db
 from app import models
 from sqlalchemy.orm import Session
-from app.schemas import PostCreate, PostResponse
+from app.schemas import PostCreate, PostResponse, UserCreate
 
 # NOTE: if i do something like this -- import app.database.engine
 # then it creates a variable called app in my file which points to the package
@@ -240,3 +240,15 @@ def test_posts(db: Session = Depends(get_db)):
 
 # NOTE how simple it is  - just get hold of db which knows about creating session, then tap into query method, specify which table/model in terms of python. and then specify the type of action u need to perform.
 # This query object just performing SQL. It abstracts all the SQL away.
+
+
+
+# --------------------------------------
+# USERS
+@app.post('/users', status_code=status.HTTP_201_CREATED)
+def create_user(user: UserCreate, db: Session = Depends(get_db)):
+    new_user = models.User(**user.model_dump()) #dict() is now depricated.
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+    return new_user
