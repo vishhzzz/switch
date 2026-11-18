@@ -2,7 +2,6 @@
 
 from fastapi import FastAPI, Response, status, HTTPException, Depends
 from fastapi.params import Body #take out content from body.
-from pydantic import BaseModel  #creating API schema.
 from typing import Optional
 from random import randrange
 import psycopg
@@ -10,6 +9,7 @@ import time
 from app.database import engine, SessionLocal, get_db
 from app import models
 from sqlalchemy.orm import Session
+from app.schemas import PostCreate
 
 # NOTE: if i do something like this -- import app.database.engine
 # then it creates a variable called app in my file which points to the package
@@ -34,12 +34,7 @@ models.Base.metadata.create_all(bind=engine) # Create every table defined in my 
 
 app = FastAPI()
 
-# API schema - class
-class Post(BaseModel):
-    title: str
-    content: str
-    published: bool = True
-    # rating: Optional[int] = None
+# have moved Pydantic/Schema model to a seperate file.
 
 # we will do DB operations here and it is very likely that these operations may fail.
 # Thus, using try catch for safer side.
@@ -91,7 +86,7 @@ def get_posts(db: Session = Depends(get_db)):
     return {'post': posts}
 
 @app.post("/posts", status_code=status.HTTP_201_CREATED)
-def creating_post(posts: Post, db: Session = Depends(get_db)):
+def creating_post(posts: PostCreate, db: Session = Depends(get_db)):
     '''
     Create Posts.
     '''
@@ -209,7 +204,7 @@ def delete_post(id:int, response:Response, db: Session = Depends(get_db)):
 
 
 @app.put("/post/{id}")
-def update_post(id:int, post:Post, db: Session=Depends(get_db)):
+def update_post(id:int, post:PostCreate, db: Session=Depends(get_db)):
     '''
     Updating Post
     '''
@@ -235,6 +230,7 @@ def update_post(id:int, post:Post, db: Session=Depends(get_db)):
     # or
     return {'message': updated_post.first()}
 
+# just a demo route.
 @app.get('/sqlalchemy')
 def test_posts(db: Session = Depends(get_db)):
     # will use query method in order to get to the relevant table
