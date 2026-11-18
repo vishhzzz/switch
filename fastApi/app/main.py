@@ -2,14 +2,14 @@
 
 from fastapi import FastAPI, Response, status, HTTPException, Depends
 from fastapi.params import Body #take out content from body.
-from typing import Optional
+from typing import Optional, List
 from random import randrange
 import psycopg
 import time
 from app.database import engine, SessionLocal, get_db
 from app import models
 from sqlalchemy.orm import Session
-from app.schemas import PostCreate
+from app.schemas import PostCreate, PostResponse
 
 # NOTE: if i do something like this -- import app.database.engine
 # then it creates a variable called app in my file which points to the package
@@ -70,7 +70,7 @@ async def root():
     '''
     return {"message": "Hello World"}
 
-@app.get("/posts")
+@app.get("/posts", response_model=List[PostResponse]) #will cause Error - because we r expecting 1 post and it is returing list of posts. After addind List it will work.
 def get_posts(db: Session = Depends(get_db)):
     '''
     Retrieving Posts.
@@ -82,10 +82,9 @@ def get_posts(db: Session = Depends(get_db)):
     
     # ORM
     posts = db.query(models.Post).all()
-    print(posts)
-    return {'post': posts}
+    return posts
 
-@app.post("/posts", status_code=status.HTTP_201_CREATED)
+@app.post("/posts", status_code=status.HTTP_201_CREATED, response_model=PostResponse)
 def creating_post(posts: PostCreate, db: Session = Depends(get_db)):
     '''
     Create Posts.
@@ -121,9 +120,9 @@ def creating_post(posts: PostCreate, db: Session = Depends(get_db)):
     db.commit() # commit into DB
     db.refresh(new_post) #get back the created post, store it into new_post.
 
-    return {"data": new_post}
+    return new_post
 
-@app.get("/posts/{id}")
+@app.get("/posts/{id}", response_model=PostResponse)
 def get_post(id:int, response:Response, db: Session = Depends(get_db)): 
     '''
     Retrieving Individual Post
@@ -154,7 +153,9 @@ def get_post(id:int, response:Response, db: Session = Depends(get_db)):
     if not post:
         raise HTTPException(status.HTTP_404_NOT_FOUND, f"post with id {id} is not present.")
     
-    return {"post_detail": post}
+    # return {"post_detail": post}
+    # we can also return only post and FastAPI would itself serialize and convert it to JSON
+    return post
 
 
 @app.delete("/del_post/{id}", status_code = status.HTTP_204_NO_CONTENT)
@@ -203,7 +204,7 @@ def delete_post(id:int, response:Response, db: Session = Depends(get_db)):
 # db.delete(post) ---> now we r informing session about delete.
 
 
-@app.put("/post/{id}")
+@app.put("/post/{id}", response_model=PostResponse)
 def update_post(id:int, post:PostCreate, db: Session=Depends(get_db)):
     '''
     Updating Post
@@ -228,7 +229,7 @@ def update_post(id:int, post:PostCreate, db: Session=Depends(get_db)):
 
     # return {'message': 'successfulllll'}
     # or
-    return {'message': updated_post.first()}
+    return updated_post.first()
 
 # just a demo route.
 @app.get('/sqlalchemy')

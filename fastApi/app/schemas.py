@@ -13,6 +13,11 @@ from pydantic import BaseModel #creating API schema.
 # 1. schemas for every operation - Create, Update.
 # 2. We can also create one base model and then inherit into others.
 
+
+# hm ise aise isiliey bdl rhe h kyunki ab hm response ko bhi structure and systematic bnaenge isliey hm uska ek seperate model bnaenge and wo base s milta jhulta hoga.
+
+
+
 class PostBase(BaseModel):
     title: str
     content: str
@@ -22,3 +27,19 @@ class PostBase(BaseModel):
 class PostCreate(PostBase):
     pass
 # it simply means that we are inheriting everything from PostBase and have nothing of its own.
+
+
+
+# Pydantic Schema model ---> for tackling/controling Response
+class PostResponse(PostBase):
+    id: int
+
+    # after defining a response schema, we can simply add one param inside route called response model.
+
+
+    # we dont need to add -     
+
+    # model_config = ConfigDict(from_attributes=True)
+    # here because Fastapi jb response model s response validate krta h to khud s from_attributes=True lga deta h 
+    # iska kaam kya h ?
+    # simply tell Pydantic Model to read the data even if its not a dict., but an ORM model
