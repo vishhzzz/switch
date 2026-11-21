@@ -9,7 +9,8 @@ import time
 from app.database import engine, SessionLocal, get_db
 from app import models
 from sqlalchemy.orm import Session
-from app.schemas import PostCreate, PostResponse, UserCreate
+from app.schemas import PostCreate, PostResponse, UserCreate, UserResponse
+from app.utils import hash
 
 # NOTE: if i do something like this -- import app.database.engine
 # then it creates a variable called app in my file which points to the package
@@ -245,10 +246,27 @@ def test_posts(db: Session = Depends(get_db)):
 
 # --------------------------------------
 # USERS
-@app.post('/users', status_code=status.HTTP_201_CREATED)
+@app.post('/users', status_code=status.HTTP_201_CREATED, response_model=UserResponse)
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
+
+    # We are storing user password in plain text which is very bad in terms of security.
+    # Ideally we must store the hash of that password.
+    # we'll need passlib - take care of hashing and bcrypt - algo
+
+    # before we create user, we need to encrypt the password.
+    user.password = hash(user.password)
+
     new_user = models.User(**user.model_dump()) #dict() is now depricated.
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
     return new_user
+
+@app.get('/users/{id}', response_model=UserResponse)
+def get_user(id: int, db: Session = Depends(get_db)):
+    user = db.query(models.User).filter(models.User.id == id).first()
+
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"User with id {id} does not exist")
+
+    return user

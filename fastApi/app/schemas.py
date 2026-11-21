@@ -1,4 +1,7 @@
-from pydantic import BaseModel, EmailStr #creating API schema.
+from pydantic import BaseModel, EmailStr
+ #creating API schema.
+
+from datetime import datetime
 
 # API schema - class
 # class Post(BaseModel):
@@ -47,3 +50,8 @@ class PostResponse(PostBase):
 class UserCreate(BaseModel):
     email: EmailStr
     password: str
+
+class UserResponse(BaseModel):
+    email: EmailStr
+    id: int
+    created_at: datetime
